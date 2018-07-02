@@ -18,8 +18,8 @@ public class PostgreSQLJDBC {
 	public String dbName = "cqa";
 	public String port = "5432";
 	public String usrName = "postgres";
-	public String psw = "";
-	public String sqlPath = "/Users/qq/Documents/GitHub/DPMT/sql/example.sql";
+	public String psw = "123";
+	public String sqlPath = "/Users/johnny/workplace/MSCProj/originQuery.sql";
 
 	public static void main(String args[]) {
 		PostgreSQLJDBC po = new PostgreSQLJDBC();
