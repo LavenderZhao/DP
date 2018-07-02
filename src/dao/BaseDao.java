@@ -14,8 +14,8 @@ public class BaseDao {
 	public String dbName = "cqa";
 	public String port = "5432";
 	public String usrName = "postgres";
-	public String psw = "";
-	public String sqlPath = "/Users/qq/Documents/GitHub/DPMT/sql/example.sql";
+	public String psw = "123";
+	public String sqlPath = "/Users/johnny/workplace/MSCProj/originQuery.sql";
 
 	private static final String SQL = "SELECT * FROM ";
 
@@ -197,4 +197,102 @@ public class BaseDao {
 	 * conn)); System.out.println("ColumnTypes:" + getColumnTypes(tableName, conn));
 	 * System.out.println("ColumnComments:" + getColumnComments(tableName)); } }
 	 */
+
+	/**
+	 * Insert data into database
+	 * 
+	 * @param conn
+	 * @param tableName
+	 * @param data
+	 */
+	public void insertdata(Connection conn, String tableName, String data) {
+
+		try {
+			// generate insert sql
+
+			String sql = "insert into " + tableName + " VALUES ( " + data + ")";
+
+			// operate sql
+
+			PreparedStatement psql = conn.prepareStatement(sql);
+			psql.executeUpdate(); // execute sql
+			psql.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// System.out.println("Insert successfully！" + "\n");
+		}
+	}
+
+	/**
+	 * update data
+	 * 
+	 * @param conn
+	 */
+	public static void updatedata(Connection conn) {
+		try {
+			PreparedStatement psql;
+			psql = conn.prepareStatement("update emp set sal = ? where ename = ?");
+			psql.setFloat(1, (float) 5000.0);
+			psql.setString(2, "Mark");
+			psql.executeUpdate();
+			psql.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("Modefy successfully！" + "\n");
+		}
+	}
+
+	/**
+	 * delete data
+	 * 
+	 * @param conn
+	 */
+	public static void deletedata(Connection conn) {
+		try {
+			PreparedStatement psql;
+			psql = conn.prepareStatement("delete from emp where sal < ?");
+			psql.setFloat(1, 3000.00F);
+			psql.executeUpdate();
+			psql.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("Delete successfully！" + "\n");
+		}
+
+	}
+
+	public void executeSQL(String sql, Connection conn) {
+
+		PreparedStatement psql;
+		try {
+			psql = conn.prepareStatement(sql);
+			psql.executeUpdate(); // execute sql
+			psql.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public boolean validateTableNameExist(String tableName, Connection conn) {
+		try {
+
+			ResultSet rs = conn.getMetaData().getTables(null, null, tableName, null);
+			if (rs.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
 }
